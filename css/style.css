@@ -1,0 +1,254 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    color: #222222;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    line-height: 1.5;
+}
+
+header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 2px solid #e91e63;
+}
+
+nav a {
+    margin: 0 10px;
+    color: #e91e63;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    color: #e91e63;
+    margin-bottom: 5px;
+}
+
+section {
+    background-color: #fdf2f6;
+    padding: 20px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+}
+
+h2 {
+    color: #e91e63;
+    margin-top: 0;
+}
+
+/* каталог */
+.catalog {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.bouquet {
+    background-color: #ffffff;
+    border: 1px solid #f0c0d0;
+    border-radius: 10px;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.bouquet:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(233, 30, 99, 0.2);
+}
+
+/* фото букета */
+.bouquet-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.bouquet h3 {
+    margin: 10px 0 5px;
+    color: #333333;
+}
+
+.bouquet .price {
+    color: #e91e63;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.bouquet button {
+    margin-top: 10px;
+}
+
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* доставка */
+.delivery-list {
+    list-style: none;
+    padding: 0;
+}
+
+.delivery-list li {
+    background-color: #ffffff;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border-left: 4px solid #e91e63;
+}
+
+/* конструктор */
+.builder-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+}
+
+.builder-row select {
+    padding: 5px;
+    font-size: 14px;
+}
+
+#totalPrice {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e91e63;
+    text-align: right;
+    margin-top: 15px;
+}
+
+/* корзина */
+#cartItems {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0c0d0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item button {
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #999999;
+}
+
+.cart-item button:hover {
+    background-color: #666666;
+}
+
+#cartTotal {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+}
+
+#cartTotal p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+#cartTotal .grand-total {
+    border-top: 1px solid #f0c0d0;
+    padding-top: 8px;
+    font-size: 18px;
+    color: #e91e63;
+}
+
+/* формы и кнопки */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 450px;
+}
+
+input, select, textarea {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+label {
+    font-weight: bold;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #c2185b;
+}
+
+footer {
+    text-align: center;
+    color: #777777;
+    font-size: 14px;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #eeeeee;
+}
+
+#orderResult {
+    color: #2e7d32;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.img-fallback {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    background-color: #fdf2f6;
+    border-radius: 8px;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+section {
+    scroll-margin-top: 20px;
+}

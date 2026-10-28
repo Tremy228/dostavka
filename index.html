@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цветы с доставкой — Флоренция</title>
+    <style>
+        html { scroll-behavior: smooth; }
+
+        body { font-family: Arial, sans-serif; background: #fff; color: #222; max-width: 900px; margin: 0 auto; padding: 20px; line-height: 1.5; }
+        header { text-align: center; padding: 20px 0; border-bottom: 2px solid #e91e63; }
+        nav a { margin: 0 10px; color: #e91e63; text-decoration: none; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        h1 { color: #e91e63; margin-bottom: 5px; }
+        section { background: #fdf2f6; padding: 20px; margin-bottom: 25px; border-radius: 10px; scroll-margin-top: 20px; }
+        h2 { color: #e91e63; margin-top: 0; }
+
+        .catalog { display: flex; gap: 20px; flex-wrap: wrap; }
+        .bouquet { background: #fff; border: 1px solid #f0c0d0; border-radius: 10px; padding: 15px; width: 200px; text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+        .bouquet:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(233,30,99,0.2); }
+        .bouquet-img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
+        .img-fallback { width: 100%; height: 150px; display: flex; align-items: center; justify-content: center; font-size: 60px; background: #fdf2f6; border-radius: 8px; }
+        .bouquet h3 { margin: 10px 0 5px; color: #333; }
+        .bouquet .price { color: #e91e63; font-weight: bold; font-size: 18px; }
+        .bouquet button { margin-top: 10px; }
+
+        .fade-in { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .delivery-list { list-style: none; padding: 0; }
+        .delivery-list li { background: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 6px; border-left: 4px solid #e91e63; }
+
+        .builder-row { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 15px; margin-bottom: 8px; border-radius: 6px; }
+        .builder-row select { padding: 5px; font-size: 14px; }
+        #totalPrice { font-size: 22px; font-weight: bold; color: #e91e63; text-align: right; margin-top: 15px; }
+
+        #cartItems { background: #fff; border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f0c0d0; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item button { padding: 5px 10px; font-size: 12px; background: #999; }
+        .cart-item button:hover { background: #666; }
+        #cartTotal { background: #fff; border-radius: 8px; padding: 10px 15px; margin-bottom: 15px; }
+        #cartTotal p { margin: 5px 0; display: flex; justify-content: space-between; }
+        #cartTotal .grand-total { border-top: 1px solid #f0c0d0; padding-top: 8px; font-size: 18px; color: #e91e63; }
+
+        form { display: flex; flex-direction: column; gap: 10px; max-width: 450px; }
+        input, select, textarea { padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-family: inherit; font-size: 14px; }
+        label { font-weight: bold; }
+        button { padding: 10px 15px; background: #e91e63; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; font-weight: bold; }
+        button:hover { background: #c2185b; }
+        footer { text-align: center; color: #777; font-size: 14px; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        #orderResult { color: #2e7d32; font-weight: bold; margin-top: 10px; }
+
+        /* кнопка наверх */
+        #toTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e91e63;
+            color: #fff;
+            font-size: 22px;
+            border: none;
+            cursor: pointer;
+            display: none;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(233, 30, 99, 0.4);
+        }
+        #toTopBtn:hover { background: #c2185b; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#catalog">Каталог</a>
+            <a href="#delivery">Доставка</a>
+            <a href="#builder">Конструктор</a>
+            <a href="#cart">Корзина (<span id="cartCount">0</span>)</a>
+            <a href="#order">Заказать</a>
+        </nav>
+        <h1>🌷 Флоренция</h1>
+        <p>Свежие цветы с доставкой по городу</p>
+    </header>
+
+    <main>
+        <section id="catalog">
+            <h2>Каталог букетов</h2>
+            <div class="catalog">
+                <div class="bouquet fade-in">
+                    <img src="images/roses.jpg" alt="Букет роз" class="bouquet-img"
+                         onerror="this.outerHTML='<div class=\'img-fallback\'>🌹</div>'">
+                    <h3>Букет «Роза»</h3>
+                    <p>15 роз с атласной лентой</p>
+                    <p class="price">1500 ₽</p>
+                    <button class="add-btn" data-title="Букет «Роза»" data-price="1500">В корзину</button>
+                </div>
+                <div class="bouquet fade-in">
+                    <img src="images/tulips.jpg" alt="Букет тюльпанов" class="bouquet-img"
+                         onerror="this.outerHTML='<div class=\'img-fallback\'>🌷</div>'">
+                    <h3>Букет «Тюльпан»</h3>
+                    <p>25 нежных тюльпанов</p>
+                    <p class="price">1200 ₽</p>
+                    <button class="add-btn" data-title="Букет «Тюльпан»" data-price="1200">В корзину</button>
+                </div>
+                <div class="bouquet fade-in">
+                    <img src="images/daisies.jpg" alt="Букет ромашек" class="bouquet-img"
+                         onerror="this.outerHTML='<div class=\'img-fallback\'>🌼</div>'">
+                    <h3>Букет «Ромашки»</h3>
+                    <p>Искусство для романтики</p>
+                    <p class="price">900 ₽</p>
+                    <button class="add-btn" data-title="Букет «Ромашки»" data-price="900">В корзину</button>
+                </div>
+                <div class="bouquet fade-in">
+                    <img src="images/mix.jpg" alt="Королевский букет" class="bouquet-img"
+                         onerror="this.outerHTML='<div class=\'img-fallback\'>💐</div>'">
+                    <h3>Букет «Королевский»</h3>
+                    <p>Микс цветов с оформлением</p>
+                    <p class="price">2500 ₽</p>
+                    <button class="add-btn" data-title="Букет «Королевский»" data-price="2500">В корзину</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="delivery">
+            <h2>Доставка</h2>
+            <ul class="delivery-list">
+                <li>🚚 Доставка по городу — <strong>300 ₽</strong></li>
+                <li>⏰ Срочная доставка за 2 часа — <strong>600 ₽</strong></li>
+                <li>🎁 Самовывоз — <strong>бесплатно</strong></li>
+                <li>🕒 Работаем ежедневно с 9:00 до 21:00</li>
+            </ul>
+        </section>
+
+        <section id="builder">
+            <h2>Собери свой букет</h2>
+            <div class="builder-row">
+                <span>Розы (150 ₽/шт)</span>
+                <select id="roses">
+                    <option value="0">0</option><option value="1">1</option><option value="3">3</option>
+                    <option value="5">5</option><option value="7">7</option><option value="11">11</option>
+                </select>
+            </div>
+            <div class="builder-row">
+                <span>Тюльпаны (80 ₽/шт)</span>
+                <select id="tulips">
+                    <option value="0">0</option><option value="5">5</option><option value="10">10</option>
+                    <option value="15">15</option><option value="25">25</option>
+                </select>
+            </div>
+            <div class="builder-row">
+                <span>Ромашки (60 ₽/шт)</span>
+                <select id="daisies">
+                    <option value="0">0</option><option value="5">5</option><option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+            <div class="builder-row">
+                <span>Упаковка</span>
+                <select id="packaging">
+                    <option value="0">Без упаковки — 0 ₽</option>
+                    <option value="150">Крафт-бумага — 150 ₽</option>
+                    <option value="300">Подарочная коробка — 300 ₽</option>
+                </select>
+            </div>
+            <div class="builder-row">
+                <span>Открытка</span>
+                <select id="card">
+                    <option value="0">Без открытки — 0 ₽</option>
+                    <option value="100">Открытка — 100 ₽</option>
+                </select>
+            </div>
+            <p id="totalPrice">Итого: 0 ₽</p>
+            <button id="builderAddBtn">Добавить в корзину</button>
+        </section>
+
+        <section id="cart">
+            <h2>Корзина</h2>
+            <div id="cartItems"><p>Корзина пока пуста</p></div>
+            <div id="cartTotal">
+                <p>Цветы: <strong id="flowersTotal">0 ₽</strong></p>
+                <p>Доставка: <strong id="deliveryTotal">0 ₽</strong></p>
+                <p class="grand-total">Итого к оплате: <strong id="grandTotal">0 ₽</strong></p>
+            </div>
+            <button id="clearCartBtn" style="display:none;">Очистить корзину</button>
+        </section>
+
+        <section id="order">
+            <h2>Оформить заказ</h2>
+            <form id="orderForm">
+                <label for="name">Ваше имя</label>
+                <input type="text" id="name" placeholder="Как вас зовут?" required>
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" placeholder="+7 (___) ___-__-__" required>
+                <label for="address">Адрес доставки</label>
+                <input type="text" id="address" placeholder="Улица, дом, квартира" required>
+                <label for="deliveryType">Способ доставки</label>
+                <select id="deliveryType">
+                    <option value="300">Курьер по городу — 300 ₽</option>
+                    <option value="600">Срочная доставка — 600 ₽</option>
+                    <option value="0">Самовывоз — 0 ₽</option>
+                </select>
+                <label for="comment">Комментарий</label>
+                <textarea id="comment" rows="3" placeholder="Пожелания..."></textarea>
+                <button type="submit">Подтвердить заказ</button>
+            </form>
+            <p id="orderResult"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Цветочный магазин «Флоренция». Учебный проект.</p>
+    </footer>
+
+    <!-- кнопка наверх -->
+    <button id="toTopBtn" title="Наверх">↑</button>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var cart = [];
+
+        // --- добавление из каталога ---
+        var addButtons = document.querySelectorAll(".add-btn");
+        for (var i = 0; i < addButtons.length; i++) {
+            addButtons[i].addEventListener("click", function () {
+                var title = this.getAttribute("data-title");
+                var price = parseInt(this.getAttribute("data-price"));
+                cart.push({ title: title, price: price });
+                updateCart();
+                alert("«" + title + "» добавлен в корзину!");
+            });
+        }
+
+        // --- конструктор ---
+        var selects = ["roses", "tulips", "daisies", "packaging", "card"];
+        for (var j = 0; j < selects.length; j++) {
+            document.getElementById(selects[j]).addEventListener("change", calculateTotal);
+        }
+
+        function calculateTotal() {
+            var roses = parseInt(document.getElementById("roses").value) || 0;
+            var tulips = parseInt(document.getElementById("tulips").value) || 0;
+            var daisies = parseInt(document.getElementById("daisies").value) || 0;
+            var packaging = parseInt(document.getElementById("packaging").value) || 0;
+            var card = parseInt(document.getElementById("card").value) || 0;
+            var total = roses * 150 + tulips * 80 + daisies * 60 + packaging + card;
+            document.getElementById("totalPrice").textContent = "Итого: " + total + " ₽";
+            return total;
+        }
+
+        document.getElementById("builderAddBtn").addEventListener("click", function () {
+            var total = calculateTotal();
+            if (total === 0) { alert("Сначала выберите цветы!"); return; }
+            cart.push({ title: "Свой букет (конструктор)", price: total });
+            updateCart();
+            alert("Букет добавлен! Стоимость: " + total + " ₽");
+        });
+
+        // --- корзина ---
+        function updateCart() {
+            var cartItems = document.getElementById("cartItems");
+            document.getElementById("cartCount").textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = "<p>Корзина пока пуста</p>";
+                document.getElementById("clearCartBtn").style.display = "none";
+                document.getElementById("flowersTotal").textContent = "0 ₽";
+                document.getElementById("deliveryTotal").textContent = "0 ₽";
+                document.getElementById("grandTotal").textContent = "0 ₽";
+                return;
+            }
+
+            var html = "";
+            var flowersTotal = 0;
+            for (var i = 0; i < cart.length; i++) {
+                html += "<div class='cart-item'><span>" + cart[i].title + " — " + cart[i].price + " ₽</span>" +
+                        "<button class='remove-btn' data-index='" + i + "'>Удалить</button></div>";
+                flowersTotal += cart[i].price;
+            }
+            cartItems.innerHTML = html;
+            document.getElementById("clearCartBtn").style.display = "inline-block";
+
+            var delivery = parseInt(document.getElementById("deliveryType").value) || 0;
+            document.getElementById("flowersTotal").textContent = flowersTotal + " ₽";
+            document.getElementById("deliveryTotal").textContent = delivery + " ₽";
+            document.getElementById("grandTotal").textContent = (flowersTotal + delivery) + " ₽";
+
+            var removeButtons = document.querySelectorAll(".remove-btn");
+            for (var k = 0; k < removeButtons.length; k++) {
+                removeButtons[k].addEventListener("click", function () {
+                    var index = parseInt(this.getAttribute("data-index"));
+                    cart.splice(index, 1);
+                    updateCart();
+                });
+            }
+        }
+
+        document.getElementById("deliveryType").addEventListener("change", updateCart);
+
+        document.getElementById("clearCartBtn").addEventListener("click", function () {
+            if (confirm("Очистить корзину?")) { cart = []; updateCart(); }
+        });
+
+        // --- отправка ---
+        document.getElementById("orderForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            if (cart.length === 0) { alert("Сначала добавьте букет в корзину!"); return; }
+            var name = document.getElementById("name").value;
+            var delivery = parseInt(document.getElementById("deliveryType").value) || 0;
+            var flowersTotal = 0;
+            for (var i = 0; i < cart.length; i++) flowersTotal += cart[i].price;
+            document.getElementById("orderResult").textContent =
+                "Спасибо, " + name + "! Заказ на " + (flowersTotal + delivery) + " ₽ принят.";
+            cart = [];
+            updateCart();
+            this.reset();
+        });
+
+        // --- анимация при прокрутке ---
+        function checkFadeIn() {
+            var els = document.querySelectorAll(".fade-in");
+            for (var i = 0; i < els.length; i++) {
+                var rect = els[i].getBoundingClientRect();
+                if (rect.top < window.innerHeight - 30 && rect.bottom > 0) {
+                    els[i].classList.add("visible");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", checkFadeIn);
+        window.addEventListener("resize", checkFadeIn);
+
+        // --- плавная прокрутка по якорям + повторная проверка анимации ---
+        var anchorLinks = document.querySelectorAll('nav a[href^="#"]');
+        for (var a = 0; a < anchorLinks.length; a++) {
+            anchorLinks[a].addEventListener("click", function (e) {
+                e.preventDefault();
+                var targetId = this.getAttribute("href");
+                var target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                    setTimeout(checkFadeIn, 100);
+                    setTimeout(checkFadeIn, 400);
+                    setTimeout(checkFadeIn, 800);
+                }
+            });
+        }
+
+        // проверка при загрузке
+        checkFadeIn();
+        setTimeout(checkFadeIn, 100);
+
+        // --- кнопка наверх ---
+        var toTopBtn = document.getElementById("toTopBtn");
+
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 300) {
+                toTopBtn.style.display = "block";
+            } else {
+                toTopBtn.style.display = "none";
+            }
+        });
+
+        toTopBtn.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        calculateTotal();
+        updateCart();
+    });
+    </script>
+</body>
+</html>
